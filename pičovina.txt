@@ -1,1 +1,10 @@
-hihi
+Bombardéros
+
+hráč je bombardér, (uzbecké výroby) a má za úkol bombardovat _____. Cílem je získat co nejvyšší skóre.
+
+Hráč hraje do té doby, dokud se nesrazí s nepřátelskou stíhačkou (nebo raketou). Body získává bombardováním cílů pod ním.
+
+budou tam _ typy budov:
+
+
+V právem rohu okna se bude zobrazovat skóre. Hrací pole bude rozděleno na 2 hlavní části - nebe a město, město bude mít 2 vrstvy - hory a budovy.
