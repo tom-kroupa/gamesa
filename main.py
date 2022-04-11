@@ -1,8 +1,6 @@
 from traceback import print_tb
 import pygame
 
-print('Hello world')
-
 
 def main():
     while True:
