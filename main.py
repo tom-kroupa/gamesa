@@ -41,6 +41,10 @@ def bomber_movement(key_pressed, bomber):       #pohybu bomberu
     if key_pressed[pygame.K_s] and bomber.y + VEL + bomber_height < 500 - 25:  # Down
         bomber.y += VEL
 
+def les_move(les):
+    les.x = les.x - 4
+    if les.x < -150:
+        les.x = 900
 
 def main():
     pygame.init()
@@ -59,9 +63,7 @@ def main():
         key_pressed = pygame.key.get_pressed() #proměná pro další funkci
         bomber_movement(key_pressed, bomber)   #volání pohybu bomberu
 
-        les.x = les.x - 4
-        if les.x < -150:
-            les.x = 900
+        les_move(les)
         draw_window(bomber, les)
 
 
