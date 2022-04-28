@@ -16,25 +16,36 @@ bomber_width, bomber_height = (99, 72)
 kubis_vel = 5
 
 
+
 # letadlo obrázek, velikost a otočení
 aircraft_image = pygame.image.load(os.path.join("images", "aircraft.png"))
 aircraft_image = pygame.transform.rotate(pygame.transform.scale(aircraft_image, (99, 72)), 270)
 
-# kubis = pygame.image.load(os.path.join(("images", "kubis.png")))
-
-
 background = pygame.image.load(os.path.join("images", "background.png"))
+les_img = pygame.image.load(os.path.join("images", "forest.png"))
 
 
-def draw_window(bomber): #vykreslí věci ve hře
+def draw_window(bomber, les): #vykreslí věci ve hře
     WIN.blit(background, (0, 0))
+    WIN.blit(les_img, (les.x, les.y))
     WIN.blit(aircraft_image, (bomber.x, bomber.y))
     pygame.display.update()
 
+def bomber_movement(key_pressed, bomber):       #pohybu bomberu
+    if key_pressed[pygame.K_a] and bomber.x - VEL > 0:  # Left
+        bomber.x -= VEL
+    if key_pressed[pygame.K_d] and bomber.x + VEL + bomber_width < 900:  # Right
+        bomber.x += VEL
+    if key_pressed[pygame.K_w] and bomber.y - VEL > 0:  # UP
+        bomber.y -= VEL
+    if key_pressed[pygame.K_s] and bomber.y + VEL + bomber_height < 500 - 25:  # Down
+        bomber.y += VEL
+
+
 def main():
     pygame.init()
-
     bomber = pygame.Rect(100, 150, bomber_width, bomber_height)
+    les = pygame.Rect(600, 375, 200, 200)
     clock = pygame.time.Clock()
 
     while True:
@@ -45,27 +56,14 @@ def main():
                 sys.exit()
 
 
-            # if event.type == pygame.KEYDOWN:
-            #     if event.key == pygame.K_SPACE:
-            #         kubis = pygame.Rect(bomber.x + bomber.width, bomber.y + bomber.height, 20, 20)
+        key_pressed = pygame.key.get_pressed() #proměná pro další funkci
+        bomber_movement(key_pressed, bomber)   #volání pohybu bomberu
 
+        les.x = les.x - 4
+        if les.x < -150:
+            les.x = 900
+        draw_window(bomber, les)
 
-
-
-        key_pressed = pygame.key.get_pressed() #pohyb bomber a hranice kam může
-        if key_pressed[pygame.K_a] and bomber.x - VEL > 0:  #Left
-            bomber.x -= VEL
-        draw_window(bomber)
-        if key_pressed[pygame.K_d] and bomber.x + VEL + bomber_width < 900: #Right
-            bomber.x += VEL
-        draw_window(bomber)
-        if key_pressed[pygame.K_w] and bomber.y - VEL > 0: #UP
-            bomber.y -= VEL
-        draw_window(bomber)
-        if key_pressed[pygame.K_s]and bomber.y + VEL + bomber_height < 500 - 25: #Down
-            bomber.y += VEL
-
-        draw_window(bomber)
 
 
 
