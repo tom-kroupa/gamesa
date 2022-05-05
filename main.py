@@ -16,13 +16,13 @@ WHITE = (255, 255, 255)
 SKY_BLUE = (50, 153, 204)
 GREEN = (0, 164, 0)
 FPS = 60
-VEL = 6
+VEL = 7
 bomber_width, bomber_height = (99, 72)
 kubis_vel = 4
 max_kubis = 2
 vydadek = pygame.USEREVENT + 1
-bullet_vel = 8
-
+bullet_vel = 10
+les_vel = 6
 
 # letadlo obrázek, velikost a otočení
 aircraft_image = pygame.image.load(os.path.join("images", "plane.png"))
@@ -58,7 +58,7 @@ def bomber_movement(key_pressed, bomber):       #pohybu bomberu
         bomber.y += VEL
 
 def les_move(les):
-    les.x = les.x - 4
+    les.x = les.x - les_vel
     if les.x < -250:
         les.x = 1100
 
@@ -96,7 +96,7 @@ def main():
     les = pygame.Rect(1000, 320, 250, 250)
     kubis_list = []
     score = 0
-    bullet = pygame.Rect(-100, random.randrange(10, 320), 15, 45)
+    bullet = pygame.Rect(-300, random.randrange(10, 320), 15, 45)
 
     clock = pygame.time.Clock()
 
