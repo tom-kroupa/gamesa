@@ -11,10 +11,11 @@ pygame.display.set_caption('Anthropos')
 WHITE = (255, 255, 255)
 SKY_BLUE = (50, 153, 204)
 FPS = 60
-VEL = 7
+VEL = 6
 bomber_width, bomber_height = (99, 72)
 kubis_vel = 4
-
+vydadek = pygame.USEREVENT + 1
+score = 0
 
 
 # letadlo obrázek, velikost a otočení
@@ -24,8 +25,7 @@ aircraft_image = pygame.transform.rotate(pygame.transform.scale(aircraft_image, 
 background = pygame.image.load(os.path.join("images", "background.jpg"))
 les_img = pygame.image.load(os.path.join("images", "forest.png"))
 kubis_img = pygame.image.load(os.path.join("images", "kubis.png"))
-
-
+kubis_img = pygame.transform.scale(kubis_img, (100, 100))
 
 
 
@@ -49,43 +49,47 @@ def bomber_movement(key_pressed, bomber):       #pohybu bomberu
 
 def les_move(les):
     les.x = les.x - 4
-    if les.x < -150:
-        les.x = 900
+    if les.x < -250:
+        les.x = 1100
 
 
 def main():
     pygame.init()
     bomber = pygame.Rect(100, 150, bomber_width, bomber_height)
-    les = pygame.Rect(600, 375, 200, 200)
+    les = pygame.Rect(1000, 250, 30, 30)
     kubis_list = []
     clock = pygame.time.Clock()
 
+    def kubis_handle(kubis_list, les):
+        for kubis in kubis_list:
+            kubis.y = kubis.y + kubis_vel
+            kubis.x = kubis.x - kubis_vel / 3
+            if les.colliderect(kubis):
+                pygame.event.post(pygame.event.Event(vydadek))
+                kubis_list.remove(kubis)
+            elif kubis.y > 550:
+                kubis_list.remove(kubis)
 
     while True:
         clock.tick(FPS)
         for event in pygame.event.get():
             if event.type == pygame.QUIT or event.type == pygame.KEYUP and event.key == pygame.K_ESCAPE :
                 pygame.quit()
-                sys.exit()
 
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_SPACE:
                     kubis = pygame.Rect(bomber.x, bomber.y, 2, 2)
                     kubis_list.append(kubis)
 
+            # if event.type == vydadek:
+            #     score = score + 1
 
 
         key_pressed = pygame.key.get_pressed() #proměná pro další funkci
-
         bomber_movement(key_pressed, bomber)   #volání pohybu bomberu
-
-        for kubis in kubis_list:
-            kubis.y = kubis.y + kubis_vel
-            kubis.x = kubis.x + kubis_vel / 2
-
+        kubis_handle(kubis_list, les)
         les_move(les)
         draw_window(bomber, les, kubis_list)
-
 
 
 
