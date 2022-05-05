@@ -2,6 +2,8 @@ from traceback import print_tb
 import sys
 import os
 import pygame
+import random
+
 pygame.font.init()
 
 WIDTH, HEIGHT = 900, 500
@@ -19,7 +21,7 @@ bomber_width, bomber_height = (99, 72)
 kubis_vel = 4
 max_kubis = 2
 vydadek = pygame.USEREVENT + 1
-
+bullet_vel = 8
 
 
 # letadlo obrázek, velikost a otočení
@@ -31,12 +33,13 @@ les_img = pygame.transform.scale(les_img, (250, 250))
 kubis_img = pygame.image.load(os.path.join("images", "kubis.png"))
 kubis_img = pygame.transform.scale(kubis_img, (100, 100))
 bullet_img = pygame.image.load(os.path.join("images", "bullets.png"))
-bullet_img = pygame.transform.rotate(pygame.transform.scale(aircraft_image, (50, 50)), 180)
+bullet_img = pygame.transform.rotate(pygame.transform.scale(bullet_img, (45, 45)), 180)
 
 
-def draw_window(bomber, les, kubis_list, score): #vykreslí věci ve hře
+def draw_window(bomber, les, kubis_list, score, bullet): #vykreslí věci ve hře
     WIN.blit(background, (0, 0))
     WIN.blit(les_img, (les.x, les.y))
+    WIN.blit(bullet_img, (bullet.x, bullet.y))
     score_text = font.render("Score" + str(score), 1, GREEN)
     WIN.blit(score_text, (WIDTH - score_text.get_width() - 10, 10))
     WIN.blit(aircraft_image, (bomber.x, bomber.y))
@@ -59,6 +62,12 @@ def les_move(les):
     if les.x < -250:
         les.x = 1100
 
+def bullet_move(bullet):
+    bullet.x = bullet.x + bullet_vel
+    if bullet.x > 900:
+        bullet.y = random.randrange(10, 320)
+        bullet.x = -100
+
 def kubis_handle(kubis_list, les):
     for kubis in kubis_list:
         kubis.y = kubis.y + kubis_vel
@@ -69,7 +78,16 @@ def kubis_handle(kubis_list, les):
         elif kubis.y > 500:
             kubis_list.remove(kubis)
 
+def handle_bullet(bullet, bomber):
+    if bullet.colliderect(bomber):
+        draw_end("Game Over")
+        main()
 
+def draw_end(text):
+    draw_text = font.render(text, 1, GREEN)
+    WIN.blit(draw_text, (WIDTH/2 - draw_text.get_width()/2, HEIGHT/2 - draw_text.get_width()/2))
+    pygame.display.update()
+    pygame.time.delay(3000)
 
 
 def main():
@@ -78,6 +96,7 @@ def main():
     les = pygame.Rect(1000, 320, 250, 250)
     kubis_list = []
     score = 0
+    bullet = pygame.Rect(-100, random.randrange(10, 320), 15, 45)
 
     clock = pygame.time.Clock()
 
@@ -100,9 +119,10 @@ def main():
         key_pressed = pygame.key.get_pressed() #proměná pro další funkci
         bomber_movement(key_pressed, bomber)   #volání pohybu bomberu
         kubis_handle(kubis_list, les)
+        bullet_move(bullet)
         les_move(les)
-        draw_window(bomber, les, kubis_list, score)
-
+        handle_bullet(bullet, bomber)
+        draw_window(bomber, les, kubis_list, score, bullet)
 
 
 if __name__ ==  "__main__":
