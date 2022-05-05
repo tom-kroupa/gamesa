@@ -1,0 +1,24 @@
+Programování
+Jakou hru jste naprogramovali
+1942, Kubiš, jak jsme se k tomu pře UA a humanitární koridory dostali, histori idk
+
+Jaké technologie jste využili
+pygame, pycharm, github
+
+Na jaké zajímavé problémy jste narazili
+na všechny
+
+Co jste se při tom naučili
+programovat v pythonu s pygame, hledat obrázky a oddělávat jim background
+
+Analýza 
+Dokumentace - idk
+
+Co jste navrhli a proč
+navrhlli a protože to fungovalo
+
+Na jaké zajímavé problémy jste narazili
+nevím kurwa
+
+Co jste se při tom naučili
+programovat v pythonu s pygame, hledat obrázky a oddělávat jim background
